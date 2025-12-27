@@ -13,19 +13,22 @@
         * { box-sizing: border-box; }
         body { 
             margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-            background: var(--bg); display: flex; justify-content: center; 
+            background: var(--bg); display: flex; justify-content: center; overflow-x: hidden;
         }
 
-        #app { width: 100%; max-width: 420px; padding: 25px 20px; }
-        h1 { font-size: 30px; font-weight: 800; margin: 0; letter-spacing: -1px; }
+        #app { width: 100%; max-width: 420px; padding: 25px 20px; min-height: 100vh; }
+        h1 { font-size: 30px; font-weight: 800; margin: 0; letter-spacing: -1px; color: var(--text-main); }
 
+        /* CARDS & INPUTS */
+        .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid #F0F0F0; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .card-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-sub); margin-bottom: 8px; }
         textarea { 
             width: 100%; border: none; outline: none; resize: none;
-            font-family: inherit; font-size: 17px; line-height: 1.4; color: var(--text-main);
-            background: transparent; height: 60px;
+            font-family: inherit; font-size: 16px; line-height: 1.4; color: var(--text-main);
+            background: transparent; height: 50px;
         }
 
-        /* KOALAS */
+        /* KOALAS SELECTION */
         .choix-koala-container { display: flex; justify-content: space-between; background: #F2F2F7; padding: 8px; border-radius: 20px; margin: 20px 0; }
         .btn-koala { width: 50px; height: 50px; border-radius: 15px; border: none; background-size: 70%; background-repeat: no-repeat; background-position: center; cursor: pointer; transition: 0.2s; }
         .btn-koala.selected { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid white; }
@@ -36,48 +39,48 @@
         .k-4 { background-color: var(--n4); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3Ccircle cx='12' cy='12' r='1.5' fill='%23444'/%3E%3C/svg%3E"); }
         .k-5 { background-color: var(--n5); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 13s1.5 3 4 3 4-3 4-3'/%3E%3Cpath d='M7 8l2 1-2 1M17 8l-2 1 2 1'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23444'/%3E%3C/svg%3E"); }
 
-        /* ARBRE */
-        .arbre-evolution { display: flex; flex-direction: column; align-items: center; min-height: 500px; position: relative; padding-top: 40px; }
-        .tronc-visuel { width: 18px; height: 60px; background: #EAEAEA; border-radius: 4px 4px 0 0; z-index: 2; }
-        .branches-container { display: flex; justify-content: center; position: relative; width: 100%; height: 350px; margin-bottom: -10px; }
+        /* L'ARBRE (STRUCTURE PIXEL CALENDAR) */
+        .arbre-evolution { display: flex; flex-direction: column; align-items: center; min-height: 400px; position: relative; padding-top: 20px; }
+        .tronc-visuel { width: 16px; height: 50px; background: #EAEAEA; border-radius: 4px 4px 0 0; z-index: 2; margin-top: -5px; }
+        .branches-container { display: flex; justify-content: center; position: relative; width: 100%; height: 320px; }
         .branche-semaine { display: flex; flex-direction: column-reverse; align-items: center; position: absolute; bottom: 0; width: 40px; height: 100%; transform-origin: bottom center; }
         
         .branche-semaine:nth-child(1) { transform: rotate(-35deg); }
         .branche-semaine:nth-child(2) { transform: rotate(-12deg); }
         .branche-semaine:nth-child(3) { transform: rotate(12deg); }
         .branche-semaine:nth-child(4) { transform: rotate(35deg); }
-        .branche-semaine::before { content: ''; position: absolute; width: 5px; height: 100%; background: #EAEAEA; border-radius: 2px; }
+        .branche-semaine::before { content: ''; position: absolute; width: 4px; height: 100%; background: #EAEAEA; border-radius: 2px; }
 
-        .feuille { position: relative; width: 42px; height: 32px; border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: rgba(0,0,0,0.3); margin: 5px 0; transition: 0.3s; cursor: pointer; }
-        .feuille:nth-child(odd) { transform: translateX(-20px) rotate(-30deg); }
-        .feuille:nth-child(even) { transform: translateX(20px) rotate(30deg); }
+        .feuille { position: relative; width: 38px; height: 28px; border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: rgba(0,0,0,0.3); margin: 4px 0; transition: 0.3s; cursor: pointer; }
+        .feuille:nth-child(odd) { transform: translateX(-18px) rotate(-25deg); }
+        .feuille:nth-child(even) { transform: translateX(18px) rotate(25deg); }
 
         .f-1 { background: var(--n1); color: white; }
         .f-2 { background: var(--n2); }
         .f-3 { background: var(--n3); }
         .f-4 { background: var(--n4); }
-        .f-5 { background: var(--n5); box-shadow: 0 0 12px var(--n5); }
-        .f-0 { width: 10px; height: 10px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 15px 0; }
+        .f-5 { background: var(--n5); box-shadow: 0 0 10px var(--n5); }
+        .f-0 { width: 8px; height: 8px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 12px 0; }
 
-        /* UI */
-        .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid #F0F0F0; }
-        .card-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-sub); }
+        /* BUTTONS & MODAL */
         .btn-save { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
-        .btn-back { background: white; border: 1px solid #EEE; border-radius: 12px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; }
+        .btn-back { background: #F2F2F7; border: none; border-radius: 12px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; }
         .cache { display: none !important; }
 
-        /* MODAL */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; }
-        .modal-content { background: white; width: 85%; max-width: 320px; border-radius: 30px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; }
+        .modal-content { background: white; width: 85%; max-width: 320px; border-radius: 25px; padding: 25px; }
+        .modal-section p { background: #F8F9FB; padding: 12px; border-radius: 15px; margin: 5px 0 15px 0; }
     </style>
 </head>
 <body>
     <div id="app">
         <main id="ecran-saisie">
             <h1>KoaLeaf</h1>
-            <p style="color: var(--text-sub);">Nourris ton eucalyptus.</p>
-            <div class="card"><div class="card-header">🏔️ Sommet</div><textarea id="note-plus"></textarea></div>
-            <div class="card"><div class="card-header">🌊 Creux</div><textarea id="note-moins"></textarea></div>
+            <p style="color: var(--text-sub); margin-bottom: 25px;">Nourris ton eucalyptus.</p>
+            
+            <div class="card"><div class="card-header">🏔️ Sommet</div><textarea id="note-plus" placeholder="Un moment fort ?"></textarea></div>
+            <div class="card"><div class="card-header">🌊 Creux</div><textarea id="note-moins" placeholder="Un défi ?"></textarea></div>
+            
             <div class="choix-koala-container">
                 <button class="btn-koala k-1" data-score="1"></button>
                 <button class="btn-koala k-2" data-score="2"></button>
@@ -85,11 +88,12 @@
                 <button class="btn-koala k-4" data-score="4"></button>
                 <button class="btn-koala k-5" data-score="5"></button>
             </div>
+            
             <button id="btn-sauvegarder" class="btn-save">Sceller la journée</button>
         </main>
 
         <section id="ecran-calendrier" class="cache">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
                 <button id="btn-retour" class="btn-back">←</button>
                 <h1>Mon Arbre</h1>
             </div>
@@ -97,15 +101,15 @@
                 <div id="branches-target" class="branches-container"></div>
                 <div class="tronc-visuel"></div>
             </div>
-            <p id="koala-quote-text" style="text-align:center; font-style:italic; color:var(--text-sub);"></p>
+            <p id="koala-quote-text" style="text-align:center; font-style:italic; color:var(--text-sub); margin-top: 20px;"></p>
         </section>
 
         <div id="modal-details" class="modal cache">
             <div class="modal-content">
-                <h2 id="modal-date"></h2>
-                <p><strong>🏔️ Sommet:</strong> <span id="modal-plus"></span></p>
-                <p><strong>🌊 Creux:</strong> <span id="modal-moins"></span></p>
-                <button onclick="document.getElementById('modal-details').classList.add('cache')">Fermer</button>
+                <h3 id="modal-date" style="margin-top:0"></h3>
+                <div class="modal-section"><label style="font-size:11px; font-weight:700; color:var(--text-sub)">🏔️ SOMMET</label><p id="modal-plus"></p></div>
+                <div class="modal-section"><label style="font-size:11px; font-weight:700; color:var(--text-sub)">🌊 CREUX</label><p id="modal-moins"></p></div>
+                <button class="btn-save" onclick="document.getElementById('modal-details').classList.add('cache')">Fermer</button>
             </div>
         </div>
     </div>
@@ -115,9 +119,16 @@
 
         let score = 0;
         const date = new Date();
-        const idMois = `knotes-${date.getFullYear()}-${date.getMonth()}`;
-        const quotes = ["Un koala dort 20h par jour, respecte ton repos.", "Ta journée est une feuille de ton arbre."];
+        const idMois = `kleaf-${date.getFullYear()}-${date.getMonth()}`;
+        const quotes = [
+            "Un koala dort 20h par jour, respecte ton repos.",
+            "Même l'eucalyptus prend son temps pour grandir.",
+            "Ta journée est une feuille de ton arbre.",
+            "Le calme est le meilleur des guides.",
+            "Reste accroché à tes rêves, comme un koala."
+        ];
 
+        // Selection Koala
         document.querySelectorAll('.btn-koala').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.btn-koala').forEach(b => b.classList.remove('selected'));
@@ -126,15 +137,22 @@
             };
         });
 
+        // Sauvegarde
         document.getElementById('btn-sauvegarder').onclick = () => {
-            if (!score) return alert("Choisis ton Koala !");
+            if (!score) return alert("Choisis ton Koala ! 🐨");
             const data = JSON.parse(localStorage.getItem(idMois)) || {};
-            data[date.getDate()] = { score, plus: document.getElementById('note-plus').value, moins: document.getElementById('note-moins').value };
+            data[date.getDate()] = { 
+                score, 
+                plus: document.getElementById('note-plus').value || "Rien à signaler", 
+                moins: document.getElementById('note-moins').value || "Rien à signaler" 
+            };
             localStorage.setItem(idMois, JSON.stringify(data));
+            
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             setTimeout(afficherArbre, 1000);
         };
 
+        // Navigation
         document.getElementById('btn-retour').onclick = () => {
             document.getElementById('ecran-calendrier').classList.add('cache');
             document.getElementById('ecran-saisie').classList.remove('cache');
@@ -143,15 +161,20 @@
         function afficherArbre() {
             document.getElementById('ecran-saisie').classList.add('cache');
             document.getElementById('ecran-calendrier').classList.remove('cache');
+            
             const container = document.getElementById('branches-target');
             container.innerHTML = "";
+            
             const data = JSON.parse(localStorage.getItem(idMois)) || {};
+            const nbJours = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
             const branches = [];
             for (let i = 0; i < 4; i++) {
                 const b = document.createElement('div'); b.className = 'branche-semaine';
                 container.appendChild(b); branches.push(b);
             }
-            for (let i = 1; i <= 31; i++) {
+
+            for (let i = 1; i <= nbJours; i++) {
                 const bIdx = Math.min(Math.floor((i - 1) / 8), 3);
                 const d = data[i];
                 const f = document.createElement('div');
@@ -167,10 +190,12 @@
                 }
                 branches[bIdx].appendChild(f);
             }
-            document.getElementById('koala-quote-text').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('koala-quote-text').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
         }
 
-        if ((JSON.parse(localStorage.getItem(idMois)) || {})[date.getDate()]) afficherArbre();
+        // Auto-load si déjà rempli aujourd'hui
+        const checkData = JSON.parse(localStorage.getItem(idMois)) || {};
+        if (checkData[date.getDate()]) afficherArbre();
     </script>
 </body>
 </html>
