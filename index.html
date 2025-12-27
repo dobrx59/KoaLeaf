@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KoaLeaf</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <main id="ecran-saisie">
+            <header>
+                <div class="header-top"><h1>KoaLeaf</h1></div>
+                <p style="color: var(--text-sub); margin-top: -5px;">Nourris ton eucalyptus.</p>
+            </header>
 
+            <div class="card">
+                <div class="card-header"><span>🏔️</span><label>Le Sommet</label></div>
+                <textarea id="note-plus" placeholder="Un moment fort ?"></textarea>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span>🌊</span><label>Le Creux</label></div>
+                <textarea id="note-moins" placeholder="Une difficulté ?"></textarea>
+            </div>
+
+            <div class="choix-koala-container">
+                <button class="btn-koala k-1" data-score="1"></button>
+                <button class="btn-koala k-2" data-score="2"></button>
+                <button class="btn-koala k-3" data-score="3"></button>
+                <button class="btn-koala k-4" data-score="4"></button>
+                <button class="btn-koala k-5" data-score="5"></button>
+            </div>
+
+            <button id="btn-sauvegarder" class="btn-save">Sceller la journée</button>
+        </main>
+
+        <section id="ecran-calendrier" class="cache">
+            <header>
+                <div class="header-top">
+                    <button id="btn-retour" class="btn-back">←</button>
+                    <h1>Mon Arbre</h1>
+                </div>
+            </header>
+
+            <div id="arbre-global-wrapper" class="arbre-evolution">
+                <div id="branches-target" class="branches-container"></div>
+                <div class="tronc-visuel"></div>
+            </div>
+
+            <div class="quote-container">
+                <p id="koala-quote-text"></p>
+            </div>
+        </section>
+
+        <div id="modal-details" class="modal cache">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="modal-date"></span>
+                    <button id="close-modal">×</button>
+                </div>
+                <div class="modal-section">
+                    <label>🏔️ Sommet</label>
+                    <p id="modal-plus"></p>
+                </div>
+                <div class="modal-section">
+                    <label>🌊 Creux</label>
+                    <p id="modal-moins"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
