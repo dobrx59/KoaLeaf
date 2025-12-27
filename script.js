@@ -1,96 +1,93 @@
-:root {
-    --n1: #FF8B94; --n2: #FFD3B6; --n3: #FFF9C4; --n4: #DCEDC1; --n5: #A8E6CF;
-    --bg: #FDFDFD; --text-main: #1C1C1E; --text-sub: #8E8E93;
-}
+import confetti from "https://cdn.skypack.dev/canvas-confetti";
 
-body { 
-    margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-    background: var(--bg); display: flex; justify-content: center; 
-}
+document.addEventListener('DOMContentLoaded', () => {
+    let score = 0;
+    const date = new Date();
+    const idMois = `knotes-${date.getFullYear()}-${date.getMonth()}`;
+    
+    const quotes = [
+        "Un koala dort 20h par jour, respecte ton repos.",
+        "Même l'eucalyptus prend son temps pour grandir.",
+        "Ta journée est une feuille de ton arbre.",
+        "Le calme est le meilleur des guides.",
+        "Reste accroché à tes rêves, comme un koala à sa branche."
+    ];
 
-#app { width: 100%; max-width: 420px; padding: 25px 20px; box-sizing: border-box; }
-h1 { font-size: 30px; font-weight: 800; margin: 0; letter-spacing: -1px; }
+    const btnsKoala = document.querySelectorAll('.btn-koala');
+    const btnSauvegarder = document.getElementById('btn-sauvegarder');
+    const btnRetour = document.getElementById('btn-retour');
+    const modal = document.getElementById('modal-details');
+    const btnCloseModal = document.getElementById('close-modal');
 
-textarea { 
-    width: 100%; border: none; outline: none; resize: none;
-    font-family: inherit; font-size: 17px; line-height: 1.4; color: var(--text-main);
-    background: transparent; height: 60px;
-}
+    btnsKoala.forEach(btn => {
+        btn.onclick = () => {
+            btnsKoala.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            score = parseInt(btn.dataset.score);
+        };
+    });
 
-/* KOALAS SVGS */
-.choix-koala-container { display: flex; justify-content: space-between; background: #F2F2F7; padding: 8px; border-radius: 20px; margin-bottom: 20px; }
-.btn-koala { width: 50px; height: 50px; border-radius: 15px; border: none; background-size: 70%; background-repeat: no-repeat; background-position: center; cursor: pointer; transition: 0.2s; }
-.btn-koala.selected { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid white; }
+    btnSauvegarder.onclick = () => {
+        if (score === 0) return alert("Choisis ton Koala ! 🐨");
+        const dataMois = JSON.parse(localStorage.getItem(idMois)) || {};
+        dataMois[date.getDate()] = {
+            score,
+            plus: document.getElementById('note-plus').value,
+            moins: document.getElementById('note-moins').value
+        };
+        localStorage.setItem(idMois, JSON.stringify(dataMois));
 
-.k-1 { background-color: var(--n1); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 15s1.5-2 4-2 4 2 4 2'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23444'/%3E%3C/svg%3E"); }
-.k-2 { background-color: var(--n2); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cline x1='8' y1='15' x2='16' y2='15'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23444'/%3E%3C/svg%3E"); }
-.k-3 { background-color: var(--n3); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cline x1='10' y1='15' x2='14' y2='15'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3Ccircle cx='12' cy='12' r='1.5' fill='%23444'/%3E%3C/svg%3E"); }
-.k-4 { background-color: var(--n4); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3Ccircle cx='12' cy='12' r='1.5' fill='%23444'/%3E%3C/svg%3E"); }
-.k-5 { background-color: var(--n5); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 13s1.5 3 4 3 4-3 4-3'/%3E%3Cpath d='M7 8l2 1-2 1M17 8l-2 1 2 1'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23444'/%3E%3C/svg%3E"); }
+        const couleurs = ['#FF8B94', '#FFD3B6', '#FFF9C4', '#DCEDC1', '#A8E6CF'];
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: [couleurs[score - 1]] });
 
-/* L'ARBRE (STRUCTURE EVENTAIL) */
-.arbre-evolution { 
-    display: flex; flex-direction: column; align-items: center; 
-    padding: 40px 0 20px 0; min-height: 500px; position: relative;
-}
+        setTimeout(afficherArbre, 1000);
+    };
 
-.tronc-visuel {
-    width: 18px; height: 60px; background: #EAEAEA;
-    border-radius: 4px 4px 0 0; position: relative; z-index: 2;
-}
+    btnCloseModal.onclick = () => modal.classList.add('cache');
+    window.onclick = (e) => { if (e.target == modal) modal.classList.add('cache'); };
+    btnRetour.onclick = () => {
+        document.getElementById('ecran-calendrier').classList.add('cache');
+        document.getElementById('ecran-saisie').classList.remove('cache');
+    };
 
-.branches-container {
-    display: flex; justify-content: center; position: relative;
-    width: 100%; height: 350px; margin-bottom: -10px;
-}
+    function afficherArbre() {
+        document.getElementById('ecran-saisie').classList.add('cache');
+        document.getElementById('ecran-calendrier').classList.remove('cache');
+        
+        const container = document.getElementById('branches-target');
+        container.innerHTML = "";
+        
+        const dataMois = JSON.parse(localStorage.getItem(idMois)) || {};
+        const nbJours = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
-.branche-semaine {
-    display: flex; flex-direction: column-reverse; align-items: center;
-    position: absolute; bottom: 0; width: 40px; height: 100%;
-    transform-origin: bottom center;
-}
+        const branches = [];
+        for (let i = 0; i < 4; i++) {
+            const b = document.createElement('div');
+            b.className = 'branche-semaine';
+            container.appendChild(b);
+            branches.push(b);
+        }
 
-.branche-semaine:nth-child(1) { transform: rotate(-35deg); }
-.branche-semaine:nth-child(2) { transform: rotate(-12deg); }
-.branche-semaine:nth-child(3) { transform: rotate(12deg); }
-.branche-semaine:nth-child(4) { transform: rotate(35deg); }
+        for (let i = 1; i <= nbJours; i++) {
+            const indexBranche = Math.min(Math.floor((i - 1) / 8), 3);
+            const d = dataMois[i];
+            const f = document.createElement('div');
+            
+            f.className = `feuille ${d ? 'f-' + d.score : 'f-0'}`;
+            f.innerText = i;
+            
+            if (d) {
+                f.onclick = () => {
+                    document.getElementById('modal-date').innerText = `Jour ${i}`;
+                    document.getElementById('modal-plus').innerText = d.plus || "🌿";
+                    document.getElementById('modal-moins').innerText = d.moins || "🐨";
+                    modal.classList.remove('cache');
+                };
+            }
+            branches[indexBranche].appendChild(f);
+        }
+        document.getElementById('koala-quote-text').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+    }
 
-.branche-semaine::before {
-    content: ''; position: absolute; width: 5px; height: 100%;
-    background: #EAEAEA; border-radius: 2px;
-}
-
-.feuille { 
-    position: relative; width: 42px; height: 32px; 
-    border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%; 
-    z-index: 5; display: flex; align-items: center; justify-content: center; 
-    font-size: 9px; font-weight: 800; color: rgba(0,0,0,0.3); 
-    margin: 5px 0; transition: 0.3s; cursor: pointer;
-}
-
-.feuille:nth-child(odd) { transform: translateX(-20px) rotate(-30deg); }
-.feuille:nth-child(even) { transform: translateX(20px) rotate(30deg); }
-
-.f-1 { background: var(--n1); color: white; }
-.f-2 { background: var(--n2); }
-.f-3 { background: var(--n3); }
-.f-4 { background: var(--n4); }
-.f-5 { background: var(--n5); box-shadow: 0 0 12px var(--n5); }
-.f-0 { width: 10px; height: 10px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 15px 0; }
-
-/* UI */
-.card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid #F0F0F0; }
-.card-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-sub); }
-.btn-save { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
-.btn-back { background: white; border: 1px solid #EEE; border-radius: 12px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; }
-.quote-container { text-align: center; padding: 20px; font-style: italic; color: var(--text-sub); font-size: 14px; }
-.cache { display: none !important; }
-
-/* MODAL */
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; }
-.modal-content { background: white; width: 85%; max-width: 320px; border-radius: 30px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-#close-modal { background: #F2F2F7; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 20px; cursor: pointer; }
-.modal-section label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-sub); margin-bottom: 5px; }
-.modal-section p { margin: 0 0 15px 0; font-size: 16px; line-height: 1.4; background: #F8F9FB; padding: 12px; border-radius: 15px; }
+    if ((JSON.parse(localStorage.getItem(idMois)) || {})[date.getDate()]) afficherArbre();
+});
