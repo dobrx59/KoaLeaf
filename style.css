@@ -17,7 +17,6 @@ textarea {
     background: transparent; height: 60px;
 }
 
-/* KOALAS SVGS */
 .choix-koala-container { display: flex; justify-content: space-between; background: #F2F2F7; padding: 8px; border-radius: 20px; margin-bottom: 20px; }
 .btn-koala { width: 50px; height: 50px; border-radius: 15px; border: none; background-size: 70%; background-repeat: no-repeat; background-position: center; cursor: pointer; transition: 0.2s; }
 .btn-koala.selected { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid white; }
@@ -78,7 +77,6 @@ textarea {
 .f-5 { background: var(--n5); box-shadow: 0 0 12px var(--n5); }
 .f-0 { width: 10px; height: 10px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 15px 0; }
 
-/* UI */
 .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid #F0F0F0; }
 .card-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-sub); }
 .btn-save { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
@@ -86,7 +84,6 @@ textarea {
 .quote-container { text-align: center; padding: 20px; font-style: italic; color: var(--text-sub); font-size: 14px; }
 .cache { display: none !important; }
 
-/* MODAL */
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; }
 .modal-content { background: white; width: 85%; max-width: 320px; border-radius: 30px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
