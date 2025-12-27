@@ -8,6 +8,7 @@
         :root {
             --n1: #FF8B94; --n2: #FFD3B6; --n3: #FFF9C4; --n4: #DCEDC1; --n5: #A8E6CF;
             --bg: #FDFDFD; --text-main: #1C1C1E; --text-sub: #8E8E93;
+            --tronc: #A67C52; /* Marron clair naturel */
         }
 
         * { box-sizing: border-box; }
@@ -19,8 +20,7 @@
         #app { width: 100%; max-width: 420px; padding: 25px 20px; min-height: 100vh; }
         h1 { font-size: 30px; font-weight: 800; margin: 0; letter-spacing: -1px; color: var(--text-main); }
 
-        /* CARDS & INPUTS */
-        .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid #F0F0F0; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; border: 1px solid #F0F0F0; }
         .card-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-sub); margin-bottom: 8px; }
         textarea { 
             width: 100%; border: none; outline: none; resize: none;
@@ -28,7 +28,6 @@
             background: transparent; height: 50px;
         }
 
-        /* KOALAS SELECTION */
         .choix-koala-container { display: flex; justify-content: space-between; background: #F2F2F7; padding: 8px; border-radius: 20px; margin: 20px 0; }
         .btn-koala { width: 50px; height: 50px; border-radius: 15px; border: none; background-size: 70%; background-repeat: no-repeat; background-position: center; cursor: pointer; transition: 0.2s; }
         .btn-koala.selected { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid white; }
@@ -39,9 +38,9 @@
         .k-4 { background-color: var(--n4); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'/%3E%3Ccircle cx='9' cy='9' r='1'/%3E%3Ccircle cx='15' cy='9' r='1'/%3E%3Ccircle cx='12' cy='12' r='1.5' fill='%23444'/%3E%3C/svg%3E"); }
         .k-5 { background-color: var(--n5); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2'%3E%3Cpath d='M8 13s1.5 3 4 3 4-3 4-3'/%3E%3Cpath d='M7 8l2 1-2 1M17 8l-2 1 2 1'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23444'/%3E%3C/svg%3E"); }
 
-        /* L'ARBRE (STRUCTURE PIXEL CALENDAR) */
+        /* L'ARBRE (STRUCTURE MODIFIÉE) */
         .arbre-evolution { display: flex; flex-direction: column; align-items: center; min-height: 400px; position: relative; padding-top: 20px; }
-        .tronc-visuel { width: 16px; height: 50px; background: #EAEAEA; border-radius: 4px 4px 0 0; z-index: 2; margin-top: -5px; }
+        .tronc-visuel { width: 16px; height: 55px; background: var(--tronc); border-radius: 4px 4px 0 0; z-index: 2; margin-top: -5px; box-shadow: inset -3px 0 rgba(0,0,0,0.1); }
         .branches-container { display: flex; justify-content: center; position: relative; width: 100%; height: 320px; }
         .branche-semaine { display: flex; flex-direction: column-reverse; align-items: center; position: absolute; bottom: 0; width: 40px; height: 100%; transform-origin: bottom center; }
         
@@ -49,7 +48,7 @@
         .branche-semaine:nth-child(2) { transform: rotate(-12deg); }
         .branche-semaine:nth-child(3) { transform: rotate(12deg); }
         .branche-semaine:nth-child(4) { transform: rotate(35deg); }
-        .branche-semaine::before { content: ''; position: absolute; width: 4px; height: 100%; background: #EAEAEA; border-radius: 2px; }
+        .branche-semaine::before { content: ''; position: absolute; width: 4px; height: 100%; background: var(--tronc); border-radius: 2px; opacity: 0.8; }
 
         .feuille { position: relative; width: 38px; height: 28px; border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: rgba(0,0,0,0.3); margin: 4px 0; transition: 0.3s; cursor: pointer; }
         .feuille:nth-child(odd) { transform: translateX(-18px) rotate(-25deg); }
@@ -62,7 +61,6 @@
         .f-5 { background: var(--n5); box-shadow: 0 0 10px var(--n5); }
         .f-0 { width: 8px; height: 8px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 12px 0; }
 
-        /* BUTTONS & MODAL */
         .btn-save { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
         .btn-back { background: #F2F2F7; border: none; border-radius: 12px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; }
         .cache { display: none !important; }
@@ -77,10 +75,8 @@
         <main id="ecran-saisie">
             <h1>KoaLeaf</h1>
             <p style="color: var(--text-sub); margin-bottom: 25px;">Nourris ton eucalyptus.</p>
-            
             <div class="card"><div class="card-header">🏔️ Sommet</div><textarea id="note-plus" placeholder="Un moment fort ?"></textarea></div>
             <div class="card"><div class="card-header">🌊 Creux</div><textarea id="note-moins" placeholder="Un défi ?"></textarea></div>
-            
             <div class="choix-koala-container">
                 <button class="btn-koala k-1" data-score="1"></button>
                 <button class="btn-koala k-2" data-score="2"></button>
@@ -88,7 +84,6 @@
                 <button class="btn-koala k-4" data-score="4"></button>
                 <button class="btn-koala k-5" data-score="5"></button>
             </div>
-            
             <button id="btn-sauvegarder" class="btn-save">Sceller la journée</button>
         </main>
 
@@ -115,8 +110,6 @@
     </div>
 
     <script type="module">
-        import confetti from "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/+esm";
-
         let score = 0;
         const date = new Date();
         const idMois = `kleaf-${date.getFullYear()}-${date.getMonth()}`;
@@ -124,11 +117,9 @@
             "Un koala dort 20h par jour, respecte ton repos.",
             "Même l'eucalyptus prend son temps pour grandir.",
             "Ta journée est une feuille de ton arbre.",
-            "Le calme est le meilleur des guides.",
-            "Reste accroché à tes rêves, comme un koala."
+            "Le calme est le meilleur des guides."
         ];
 
-        // Selection Koala
         document.querySelectorAll('.btn-koala').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.btn-koala').forEach(b => b.classList.remove('selected'));
@@ -137,9 +128,8 @@
             };
         });
 
-        // Sauvegarde
         document.getElementById('btn-sauvegarder').onclick = () => {
-            if (!score) return alert("Choisis ton Koala ! 🐨");
+            if (!score) return alert("Choisis ton Koala !");
             const data = JSON.parse(localStorage.getItem(idMois)) || {};
             data[date.getDate()] = { 
                 score, 
@@ -147,12 +137,9 @@
                 moins: document.getElementById('note-moins').value || "Rien à signaler" 
             };
             localStorage.setItem(idMois, JSON.stringify(data));
-            
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            setTimeout(afficherArbre, 1000);
+            afficherArbre();
         };
 
-        // Navigation
         document.getElementById('btn-retour').onclick = () => {
             document.getElementById('ecran-calendrier').classList.add('cache');
             document.getElementById('ecran-saisie').classList.remove('cache');
@@ -161,20 +148,15 @@
         function afficherArbre() {
             document.getElementById('ecran-saisie').classList.add('cache');
             document.getElementById('ecran-calendrier').classList.remove('cache');
-            
             const container = document.getElementById('branches-target');
             container.innerHTML = "";
-            
             const data = JSON.parse(localStorage.getItem(idMois)) || {};
-            const nbJours = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-
             const branches = [];
             for (let i = 0; i < 4; i++) {
                 const b = document.createElement('div'); b.className = 'branche-semaine';
                 container.appendChild(b); branches.push(b);
             }
-
-            for (let i = 1; i <= nbJours; i++) {
+            for (let i = 1; i <= 31; i++) {
                 const bIdx = Math.min(Math.floor((i - 1) / 8), 3);
                 const d = data[i];
                 const f = document.createElement('div');
@@ -193,7 +175,6 @@
             document.getElementById('koala-quote-text').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
         }
 
-        // Auto-load si déjà rempli aujourd'hui
         const checkData = JSON.parse(localStorage.getItem(idMois)) || {};
         if (checkData[date.getDate()]) afficherArbre();
     </script>
