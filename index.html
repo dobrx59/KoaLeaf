@@ -25,11 +25,15 @@
           align-items: center; justify-content: center; z-index: 1000;
           transition: opacity 0.8s ease-out, visibility 0.8s;
         }
+
         .splash-logo-img { 
-          width: 100px; height: 100px; 
-          object-fit: contain; margin-bottom: 10px;
+          width: 100px; 
+          height: 100px; 
+          object-fit: contain; 
+          margin-bottom: 10px;
           animation: pulse 2s infinite; 
         }
+
         .splash-title { font-size: 28px; font-weight: 900; letter-spacing: 4px; color: var(--text-main); }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
@@ -65,7 +69,7 @@
         .branche-semaine:nth-child(4) { transform: rotate(35deg); }
         .branche-semaine::before { content: ''; position: absolute; width: 4px; height: 100%; background: var(--tronc); opacity: 0.8; }
 
-        /* FEUILLES STYLE */
+        /* FEUILLES STYLE & FEEDBACK */
         .feuille { 
           position: relative; width: 38px; height: 28px; 
           border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%; 
@@ -74,14 +78,20 @@
           box-shadow: 0 3px 6px rgba(0,0,0,0.1);
           transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
         }
+
         .feuille:nth-child(odd) { transform: translateX(-18px) rotate(-25deg); }
         .feuille:nth-child(even) { transform: translateX(18px) rotate(25deg); }
-        .f-1 { background-color: var(--n1) !important; color: white; cursor: pointer; }
-        .f-2 { background-color: var(--n2) !important; color: rgba(0,0,0,0.6); cursor: pointer; }
-        .f-3 { background-color: var(--n3) !important; color: rgba(0,0,0,0.6); cursor: pointer; }
-        .f-4 { background-color: var(--n4) !important; color: rgba(0,0,0,0.6); cursor: pointer; }
-        .f-5 { background-color: var(--n5) !important; color: rgba(0,0,0,0.6); cursor: pointer; }
-        .f-0 { width: 10px; height: 10px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 12px 0; box-shadow: none; }
+
+        .f-1 { background-color: var(--n1) !important; color: white; opacity: 1; cursor: pointer; }
+        .f-2 { background-color: var(--n2) !important; color: rgba(0,0,0,0.6); opacity: 1; cursor: pointer; }
+        .f-3 { background-color: var(--n3) !important; color: rgba(0,0,0,0.6); opacity: 1; cursor: pointer; }
+        .f-4 { background-color: var(--n4) !important; color: rgba(0,0,0,0.6); opacity: 1; cursor: pointer; }
+        .f-5 { background-color: var(--n5) !important; color: rgba(0,0,0,0.6); opacity: 1; cursor: pointer; }
+        .f-0 { width: 10px; height: 10px; background: #EAEAEA; border-radius: 50%; color: transparent; transform: none !important; margin: 12px 0; box-shadow: none; opacity: 1; }
+
+        .feuille[class*="f-"]:not(.f-0):hover { z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .feuille:nth-child(odd)[class*="f-"]:not(.f-0):hover { transform: translateX(-18px) rotate(-25deg) scale(1.2) !important; }
+        .feuille:nth-child(even)[class*="f-"]:not(.f-0):hover { transform: translateX(18px) rotate(25deg) scale(1.2) !important; }
 
         /* BOUTONS & MODAL */
         .btn-save { width: 100%; padding: 20px; border-radius: 20px; border: none; background: var(--text-main); color: white; font-weight: 700; cursor: pointer; }
@@ -91,6 +101,26 @@
         .modal-content { background: white; width: 85%; max-width: 320px; border-radius: 28px; padding: 25px; }
         .modal-section label { font-size: 11px; font-weight: 700; color: var(--text-sub); }
         .modal-section p { background: #F8F9FB; padding: 12px; border-radius: 15px; margin: 5px 0 15px 0; }
+        
+        #btn-modifier-feuille {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #888;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #btn-modifier-feuille:hover {
+            background: #f9f9f9;
+            color: #444;
+            border-color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -147,8 +177,13 @@ window.addEventListener('load', () => {
 });
 
 let score = 0;
-const date = new Date();
-const idMois = `koach-${date.getFullYear()}-${date.getMonth()}`;
+const dateDuJour = new Date();
+let vueMois = dateDuJour.getMonth();
+let vueAnnee = dateDuJour.getFullYear();
+
+let jourEnModification = null; 
+
+const obtenirIdMois = (m, a) => `koach-${a}-${m}`;
 
 document.querySelectorAll('.btn-koala').forEach(btn => {
   btn.onclick = () => {
@@ -160,17 +195,28 @@ document.querySelectorAll('.btn-koala').forEach(btn => {
 
 document.getElementById('btn-sauvegarder').onclick = () => {
   if (!score) return alert("Choisis ton Koala ! 🐨");
-  const data = JSON.parse(localStorage.getItem(idMois)) || {};
-  data[date.getDate()] = { 
+  
+  const jourCible = jourEnModification ? jourEnModification : dateDuJour.getDate();
+  const moisCible = jourEnModification ? vueMois : dateDuJour.getMonth();
+  const anneeCible = jourEnModification ? vueAnnee : dateDuJour.getFullYear();
+  
+  const idCible = obtenirIdMois(moisCible, anneeCible);
+  const data = JSON.parse(localStorage.getItem(idCible)) || {};
+  
+  data[jourCible] = { 
     score, 
     plus: document.getElementById('note-plus').value || "Journée calme", 
     moins: document.getElementById('note-moins').value || "Rien à signaler" 
   };
-  localStorage.setItem(idMois, JSON.stringify(data));
+  
+  localStorage.setItem(idCible, JSON.stringify(data));
+  
+  jourEnModification = null;
   afficherArbre();
 };
 
 document.getElementById('btn-retour').onclick = () => {
+  jourEnModification = null;
   document.getElementById('ecran-calendrier').classList.add('cache');
   document.getElementById('ecran-saisie').classList.remove('cache');
 };
@@ -178,8 +224,36 @@ document.getElementById('btn-retour').onclick = () => {
 function afficherArbre() {
   document.getElementById('ecran-saisie').classList.add('cache');
   document.getElementById('ecran-calendrier').classList.remove('cache');
+  
   const container = document.getElementById('branches-target');
   container.innerHTML = "";
+  
+  const nomMoisClair = new Date(vueAnnee, vueMois).toLocaleDateString('fr-FR', {month:'long', year:'numeric'});
+  const titreElt = document.querySelector('#ecran-calendrier h2') || document.querySelector('#ecran-calendrier h1');
+  
+  if (titreElt) {
+    titreElt.style.display = "flex";
+    titreElt.style.alignItems = "center";
+    titreElt.style.justifyContent = "center";
+    titreElt.style.whiteSpace = "nowrap";
+    titreElt.innerHTML = `
+      <span id="prev-mois" style="cursor:pointer; padding:0 15px; font-size:1.5em; user-select:none;">‹</span>
+      <span style="flex-shrink: 0;">${nomMoisClair}</span>
+      <span id="next-mois" style="cursor:pointer; padding:0 15px; font-size:1.5em; user-select:none;">›</span>
+    `;
+    
+    document.getElementById('prev-mois').onclick = (e) => {
+        e.stopPropagation();
+        if(vueMois === 0) { vueMois = 11; vueAnnee--; } else { vueMois--; }
+        afficherArbre();
+    };
+    document.getElementById('next-mois').onclick = (e) => {
+        e.stopPropagation();
+        if(vueMois === 11) { vueMois = 0; vueAnnee++; } else { vueMois++; }
+        afficherArbre();
+    };
+  }
+
   const branches = [];
   for (let i = 0; i < 4; i++) {
     const b = document.createElement('div');
@@ -187,23 +261,47 @@ function afficherArbre() {
     container.appendChild(b);
     branches.push(b);
   }
-  const data = JSON.parse(localStorage.getItem(idMois)) || {};
-  const nbJours = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+  const idMoisVue = obtenirIdMois(vueMois, vueAnnee);
+  const data = JSON.parse(localStorage.getItem(idMoisVue)) || {};
+  const nbJours = new Date(vueAnnee, vueMois + 1, 0).getDate();
+
   for (let i = 1; i <= nbJours; i++) {
     const bIdx = Math.min(Math.floor((i - 1) / 8), 3);
     const dayData = data[i];
     const f = document.createElement('div');
+    
     if (dayData && dayData.score) {
         f.className = `feuille f-${dayData.score}`;
     } else {
         f.className = `feuille f-0`;
     }
-    f.innerText = i;
+    
+    f.innerText = i; 
+    
     if (dayData) {
       f.onclick = () => {
-        document.getElementById('modal-date').innerText = `Jour ${i}`;
+        jourEnModification = i;
+        document.getElementById('modal-date').innerText = `${i} ${new Date(vueAnnee, vueMois).toLocaleDateString('fr-FR', {month:'long'})}`;
         document.getElementById('modal-plus').innerText = dayData.plus;
         document.getElementById('modal-moins').innerText = dayData.moins;
+        
+        let btnModif = document.getElementById('btn-modifier-feuille');
+        if(!btnModif) {
+            btnModif = document.createElement('button');
+            btnModif.id = 'btn-modifier-feuille';
+            btnModif.innerText = "Modifier ce jour";
+            btnModif.style.marginTop = "15px";
+            btnModif.onclick = () => {
+                document.getElementById('modal-details').classList.add('cache');
+                document.getElementById('ecran-calendrier').classList.add('cache');
+                document.getElementById('ecran-saisie').classList.remove('cache');
+                document.getElementById('note-plus').value = dayData.plus;
+                document.getElementById('note-moins').value = dayData.moins;
+            };
+            document.getElementById('modal-details').querySelector('.modal-content').appendChild(btnModif);
+        }
+
         document.getElementById('modal-details').classList.remove('cache');
       };
     }
@@ -211,9 +309,20 @@ function afficherArbre() {
   }
 }
 
-const checkData = JSON.parse(localStorage.getItem(idMois)) || {};
-if (checkData[date.getDate()]) {
+const idInit = obtenirIdMois(dateDuJour.getMonth(), dateDuJour.getFullYear());
+const checkData = JSON.parse(localStorage.getItem(idInit)) || {};
+if (checkData[dateDuJour.getDate()]) {
     setTimeout(afficherArbre, 2300);
+}
+
+const modalDetail = document.getElementById('modal-details');
+if (modalDetail) {
+    modalDetail.onclick = (e) => {
+        if (e.target === modalDetail) {
+            jourEnModification = null;
+            modalDetail.classList.add('cache');
+        }
+    };
 }
 </script>
 
